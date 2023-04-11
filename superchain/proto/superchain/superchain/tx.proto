@@ -1,0 +1,7 @@
+syntax = "proto3";
+package peixer.superchain.superchain;
+
+option go_package = "github.com/Peixer/superchain/x/superchain/types";
+
+// Msg defines the Msg service.
+service Msg {}
