@@ -17,3 +17,16 @@ const (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	PythonCodeKey      = "PythonCode/value/"
+	PythonCodeCountKey = "PythonCode/count/"
+)
+
+const (
+	GameCreatedEventType      = "new-game-created" // Indicates what event type to listen to
+	GameCreatedEventCreator   = "creator"          // Subsidiary information
+	GameCreatedEventGameIndex = "game-index"       // What game is relevant
+	GameCreatedEventBlack     = "black"            // Is it relevant to me?
+	GameCreatedEventRed       = "red"              // Is it relevant to me?
+)

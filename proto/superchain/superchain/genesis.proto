@@ -1,12 +1,17 @@
 syntax = "proto3";
+
 package peixer.superchain.superchain;
 
 import "gogoproto/gogo.proto";
 import "superchain/superchain/params.proto";
+import "superchain/superchain/python_code.proto";
 
 option go_package = "github.com/Peixer/superchain/x/superchain/types";
 
 // GenesisState defines the superchain module's genesis state.
 message GenesisState {
-  Params params = 1 [(gogoproto.nullable) = false];
+           Params     params          = 1 [(gogoproto.nullable) = false];
+  repeated PythonCode pythonCodeList  = 2 [(gogoproto.nullable) = false];
+           uint64     pythonCodeCount = 3;
 }
+

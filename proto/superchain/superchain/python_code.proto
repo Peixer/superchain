@@ -1,0 +1,10 @@
+syntax = "proto3";
+package peixer.superchain.superchain;
+
+option go_package = "github.com/Peixer/superchain/x/superchain/types";
+
+message PythonCode {
+  uint64 id = 1;
+  string uRI = 2; 
+  string creator = 3;
+}

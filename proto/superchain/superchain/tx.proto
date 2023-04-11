@@ -1,7 +1,46 @@
 syntax = "proto3";
+
 package peixer.superchain.superchain;
+
+import "superchain/superchain/python_code.proto";
 
 option go_package = "github.com/Peixer/superchain/x/superchain/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreatePythonCode (MsgCreatePythonCode) returns (MsgCreatePythonCodeResponse);
+  rpc UpdatePythonCode (MsgUpdatePythonCode) returns (MsgUpdatePythonCodeResponse);
+  rpc DeletePythonCode (MsgDeletePythonCode) returns (MsgDeletePythonCodeResponse);
+  rpc RunCode          (MsgRunCode         ) returns (MsgRunCodeResponse         );
+}
+message MsgCreatePythonCode {
+  string creator = 1;
+  string uRI     = 2;
+}
+
+message MsgCreatePythonCodeResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdatePythonCode {
+  string creator = 1;
+  uint64 id      = 2;
+  string uRI     = 3;
+}
+
+message MsgUpdatePythonCodeResponse {}
+
+message MsgDeletePythonCode {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgDeletePythonCodeResponse {}
+
+message MsgRunCode {
+  string creator = 1;
+  int32  id      = 2;
+}
+
+message MsgRunCodeResponse {}
+

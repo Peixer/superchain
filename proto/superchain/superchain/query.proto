@@ -1,26 +1,58 @@
 syntax = "proto3";
+
 package peixer.superchain.superchain;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "superchain/superchain/params.proto";
+import "superchain/superchain/python_code.proto";
 
 option go_package = "github.com/Peixer/superchain/x/superchain/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/Peixer/superchain/superchain/params";
+  
+  }
+  
+  // Queries a list of PythonCode items.
+  rpc PythonCode    (QueryGetPythonCodeRequest) returns (QueryGetPythonCodeResponse) {
+    option (google.api.http).get = "/Peixer/superchain/superchain/python_code/{id}";
+  
+  }
+  rpc PythonCodeAll (QueryAllPythonCodeRequest) returns (QueryAllPythonCodeResponse) {
+    option (google.api.http).get = "/Peixer/superchain/superchain/python_code";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetPythonCodeRequest {
+  uint64 id = 1;
+}
+
+message QueryGetPythonCodeResponse {
+  PythonCode PythonCode = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPythonCodeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPythonCodeResponse {
+  repeated PythonCode                             PythonCode = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+

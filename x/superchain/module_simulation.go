@@ -24,7 +24,23 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgCreatePythonCode = "op_weight_msg_python_code"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreatePythonCode int = 100
+
+	opWeightMsgUpdatePythonCode = "op_weight_msg_python_code"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdatePythonCode int = 100
+
+	opWeightMsgDeletePythonCode = "op_weight_msg_python_code"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeletePythonCode int = 100
+
+	opWeightMsgRunCode = "op_weight_msg_run_code"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRunCode int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -35,6 +51,17 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	superchainGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
+		PythonCodeList: []types.PythonCode{
+			{
+				Id:      0,
+				Creator: sample.AccAddress(),
+			},
+			{
+				Id:      1,
+				Creator: sample.AccAddress(),
+			},
+		},
+		PythonCodeCount: 2,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&superchainGenesis)
@@ -57,6 +84,50 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgCreatePythonCode int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreatePythonCode, &weightMsgCreatePythonCode, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreatePythonCode = defaultWeightMsgCreatePythonCode
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreatePythonCode,
+		superchainsimulation.SimulateMsgCreatePythonCode(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdatePythonCode int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdatePythonCode, &weightMsgUpdatePythonCode, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdatePythonCode = defaultWeightMsgUpdatePythonCode
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdatePythonCode,
+		superchainsimulation.SimulateMsgUpdatePythonCode(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeletePythonCode int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeletePythonCode, &weightMsgDeletePythonCode, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeletePythonCode = defaultWeightMsgDeletePythonCode
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeletePythonCode,
+		superchainsimulation.SimulateMsgDeletePythonCode(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRunCode int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRunCode, &weightMsgRunCode, nil,
+		func(_ *rand.Rand) {
+			weightMsgRunCode = defaultWeightMsgRunCode
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRunCode,
+		superchainsimulation.SimulateMsgRunCode(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 
