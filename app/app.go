@@ -106,6 +106,7 @@ import (
 	superchainmodule "github.com/Peixer/superchain/x/superchain"
 	superchainmodulekeeper "github.com/Peixer/superchain/x/superchain/keeper"
 	superchainmoduletypes "github.com/Peixer/superchain/x/superchain/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "github.com/Peixer/superchain/app/params"
@@ -170,14 +171,15 @@ var (
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:     nil,
-		distrtypes.ModuleName:          nil,
-		icatypes.ModuleName:            nil,
-		minttypes.ModuleName:           {authtypes.Minter},
-		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:            {authtypes.Burner},
-		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		authtypes.FeeCollectorName:       nil,
+		distrtypes.ModuleName:            nil,
+		icatypes.ModuleName:              nil,
+		minttypes.ModuleName:             {authtypes.Minter},
+		stakingtypes.BondedPoolName:      {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName:   {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:              {authtypes.Burner},
+		ibctransfertypes.ModuleName:      {authtypes.Minter, authtypes.Burner},
+		superchainmoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -496,6 +498,7 @@ func New(
 	)
 
 	app.SuperchainKeeper = *superchainmodulekeeper.NewKeeper(
+		app.BankKeeper,
 		appCodec,
 		keys[superchainmoduletypes.StoreKey],
 		keys[superchainmoduletypes.MemStoreKey],
